@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { toast } from 'sonner';
 import { motion } from 'framer-motion';
-import { serverAds } from '../data/serverAds';
+import { supabase } from '../lib/supabase';
 
 const AdForm: React.FC = () => {
   const { isAuthenticated, user } = useAuth();
@@ -11,37 +11,39 @@ const AdForm: React.FC = () => {
   const [inviteLink, setInviteLink] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!isAuthenticated) {
+    if (!isAuthenticated || !user) {
       toast.error('You must be logged in to submit an ad');
       return;
     }
     
     setIsSubmitting(true);
     
-    // Create new ad
-    const newAd = {
-      id: (serverAds.length + 1).toString(),
-      title,
-      description,
-      serverId: Date.now().toString(),
-      userId: user?.id || '',
-      inviteLink,
-      createdAt: new Date().toISOString(),
-      approved: false
-    };
+    try {
+      const { error } = await supabase
+        .from('server_ads')
+        .insert({
+          title,
+          description,
+          server_id: Date.now().toString(),
+          user_id: user.id,
+          invite_link: inviteLink,
+        });
 
-    // Add to serverAds array
-    serverAds.push(newAd);
-    
-    // Show success message and reset form
-    toast.success('Your ad has been submitted for review!');
-    setTitle('');
-    setDescription('');
-    setInviteLink('');
-    setIsSubmitting(false);
+      if (error) throw error;
+      
+      toast.success('Your ad has been submitted for review!');
+      setTitle('');
+      setDescription('');
+      setInviteLink('');
+    } catch (error) {
+      console.error('Error submitting ad:', error);
+      toast.error('Failed to submit ad. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   if (!isAuthenticated) {
