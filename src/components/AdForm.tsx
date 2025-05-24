@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { toast } from 'sonner';
 import { motion } from 'framer-motion';
+import { serverAds } from '../data/serverAds';
 
 const AdForm: React.FC = () => {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, user } = useAuth();
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [inviteLink, setInviteLink] = useState('');
@@ -20,14 +21,27 @@ const AdForm: React.FC = () => {
     
     setIsSubmitting(true);
     
-    // Simulate form submission
-    setTimeout(() => {
-      toast.success('Your ad has been submitted for review!');
-      setTitle('');
-      setDescription('');
-      setInviteLink('');
-      setIsSubmitting(false);
-    }, 1500);
+    // Create new ad
+    const newAd = {
+      id: (serverAds.length + 1).toString(),
+      title,
+      description,
+      serverId: Date.now().toString(),
+      userId: user?.id || '',
+      inviteLink,
+      createdAt: new Date().toISOString(),
+      approved: false
+    };
+
+    // Add to serverAds array
+    serverAds.push(newAd);
+    
+    // Show success message and reset form
+    toast.success('Your ad has been submitted for review!');
+    setTitle('');
+    setDescription('');
+    setInviteLink('');
+    setIsSubmitting(false);
   };
 
   if (!isAuthenticated) {
