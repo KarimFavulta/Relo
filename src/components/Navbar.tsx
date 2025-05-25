@@ -220,3 +220,5 @@ const Navbar: React.FC = () => {
     </motion.nav>
   );
 };
+
+export default Navbar
