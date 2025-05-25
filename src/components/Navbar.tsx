@@ -76,12 +76,6 @@ const Navbar: React.FC = () => {
             >
               About
             </Link>
-            <Link 
-              to="/ads" 
-              className={`text-white hover:text-purple-300 transition-colors ${isActive('/ads') ? 'font-bold text-purple-300' : ''}`}
-            >
-              Server Ads
-            </Link>
 
             {/* Music Controls */}
             <div className="flex items-center space-x-2">
@@ -171,13 +165,6 @@ const Navbar: React.FC = () => {
             >
               About
             </Link>
-            <Link 
-              to="/ads" 
-              className={`text-white hover:text-purple-300 transition-colors py-2 ${isActive('/ads') ? 'font-bold text-purple-300' : ''}`}
-              onClick={closeMenu}
-            >
-              Server Ads
-            </Link>
 
             {/* Music Controls for Mobile */}
             <div className="flex items-center space-x-3 py-2">
@@ -233,5 +220,3 @@ const Navbar: React.FC = () => {
     </motion.nav>
   );
 };
-
-export default Navbar;

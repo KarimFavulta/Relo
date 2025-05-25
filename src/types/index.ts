@@ -15,17 +15,6 @@ export interface DiscordServer {
   memberCount?: number;
 }
 
-export interface ServerAd {
-  id: string;
-  title: string;
-  description: string;
-  serverId: string;
-  userId: string;
-  inviteLink: string;
-  createdAt: string;
-  approved: boolean;
-}
-
 export interface Song {
   id: string;
   title: string;

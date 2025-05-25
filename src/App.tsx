@@ -11,7 +11,6 @@ import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
 import ServersPage from './pages/ServersPage';
 import AboutPage from './pages/AboutPage';
-import AdsPage from './pages/AdsPage';
 
 function App() {
   return (
@@ -27,7 +26,6 @@ function App() {
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/servers" element={<ServersPage />} />
                 <Route path="/about" element={<AboutPage />} />
-                <Route path="/ads" element={<AdsPage />} />
               </Routes>
             </main>
             
